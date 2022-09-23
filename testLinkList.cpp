@@ -2216,7 +2216,7 @@ void fillNLs(Baseder& baseder, LinkList<string>& ls) {
 	up.setText(1, yt++, "cin.get();", 0x02);
 	up.setText(1, yt++, "string value;", 0x02);
 	up.setText(1, yt++, "getline(cin,value);", 0x02);
-	up.setText(1, yt++, "fill_n(ls.begin(),10,value);", 0x02);
+	up.setText(1, yt++, "fill_n(front_inserter(ls),10,value);", 0x02);
 	up.setText(1, yt++, "ls.show();", 0x02);
 	baseder.draw();
 

@@ -27,6 +27,12 @@
     <ClCompile Include="Base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="testJosephus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="depositBusiness.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LinkList.h">
@@ -44,12 +50,21 @@
     <ClInclude Include="Base.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="testJosephus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="depositBusiness.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mailList.txt">
       <Filter>源文件</Filter>
     </Text>
     <Text Include="lsData.txt">
+      <Filter>源文件</Filter>
+    </Text>
+    <Text Include="depositBusiness.txt">
       <Filter>源文件</Filter>
     </Text>
   </ItemGroup>

@@ -28,7 +28,7 @@ inline void eat() {//Çå¿ÕÊäÈë»º³åÇø
 	while (cin.peek() != '\n') {
 		cin.get();
 	}
-	clsbuf();
+	cin.get();
 }
 
 class Base

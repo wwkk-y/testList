@@ -101,21 +101,20 @@ public:
 	const T& front() const{ return head->data; };//返回第一个元素数据
 	const T& back() const{ return tail->data; };//返回最后一个元素数据
 	/*
-	insert:		这里的insert更类似标准库容器里的insert_back(目的是节约单向链表查找前一个节点的时间),这里的insert时间固定
+	insert:		这里的insert更类似标准库容器里的insert_back,操作时间固定;
 	说明:		可正常使用标准库的back_inserter,front_inserter,但使用inserter需要稍加注意:inserter会添加元素到所给位置之
 			后，而标准库容器是添加到所给位置之前。
 	
 	关于inserter说明:
-				由于是单向链表,添加到所给位置之前需要遍历链表,为了节省操作时间,这里设计的insert与标准库容器的insert不同:
-			此处的insert均添加元素到所给位置之后,如果需要添加到begin位置之前,不能直接使用inserter(ls,ls.begin())(ls表示
-			一个LinkList<T>对象)，但您可使用push_front()来添加，虽然inserter添加位置不同，但是确保了您可以正常添加一系列
-			元素到所给位置之后。
+				为了节省操作时间,这里设计的insert与标准库容器的insert不同,此处的insert均添加元素到所给位置之后,如果需要添
+			加到begin位置之前,不能直接使用inserter(ls,ls.begin())(ls表示一个LinkList<T>对象)，但您可使用push_front()来添加，
+			虽然inserter添加位置不同，但是确保了您可以正常添加一系列元素到所给位置之后。
 	
 	关于end():
-				由于单向链表结构的局限性，insert设计为插入元素到所给位置之后来节省运行时间,但是对end()位置就不太友好,需要在
-			尾部使用inserter时，一般来说需要使用end()前一个位置的迭代器，为了更优雅的使用，insert算法和迭代器设计时都单独考
-			虑了end()，现在使用inserter在尾部插入元素时可直接使用end()，当然如果您乐意，使用begin()+(size()-1)也可以，迭代器
-			设计时确保了++iterator和iterator++操作不会越界（但是 iterator+数字 操作没有这个设计!!!）。
+				insert设计为插入元素到所给位置之后来节省运行时间,但是对end()位置就不太友好,需要在尾部使用inserter时，一般来
+			说需要使用end()前一个位置的迭代器，为了更优雅的使用，insert算法和迭代器设计时都单独考虑了end()，现在使用inserter
+			在尾部插入元素时可直接使用end()，当然如果您乐意，使用begin()+(size()-1)也可以，迭代器设计时确保了++iterator和ite
+			rator++操作不会越界（但是 iterator+数字 操作没有这个设计!!!）。
 	*/
 	iterator insert(const iterator& pos, const T& value);//value插入到pos位置后
 														 //返回表示插入元素位置的迭代器(方便inserter插入算法中的后移操作)
@@ -125,11 +124,10 @@ public:
 	LinkList<T>& insert(const iterator& pos,const It begin,const It end);//迭代器插入,插入到pos位置之后
 	LinkList<T>& emplace(const iterator& pos, std::initializer_list<T> ls);//pos位置后直接列表添加元素
 	
-	LinkList<T>& erase(iterator pos);//删除pos位置元素,线性时间(会查找pos前一个元素)
-	LinkList<T>& erase(iterator begin,iterator end);//删除[begin,end)区间元素，线性时间(会查找begin前一个元素)
-	LinkList<T>& erase_back(iterator pos);//删除pos位置后面的一个元素,相较于erase操作所需时间更少,只需固定时间
-	LinkList<T>& erase_back(iterator begin,iterator end);//删除[begin+1,end)区间元素,
-														 //相较于erase操作所需时间更少，只需固定时间
+	LinkList<T>& erase(iterator pos);//删除pos位置元素
+	LinkList<T>& erase(iterator begin,iterator end);//删除[begin,end)区间元素
+	LinkList<T>& erase_back(iterator pos);//删除pos位置后面的一个元素
+	LinkList<T>& erase_back(iterator begin,iterator end);//删除[begin+1,end)区间元素
 
 	iterator find(const T& t);//查找元素,没找到返回end(),如果为end(),iterator可转化为false,其余情况为true
 	iterator find(const T& t, iterator pos);//从pos开始查找,没找到返回end(),如果为end(),iterator可转化为false,其余情况为true
@@ -195,6 +193,7 @@ public:
 	//测试相关
 	void show();//遍历并展示
 	int show(int with,Baseder& baseder,int y,int x);//长度with时换行
+	int showJosephus(int with, Baseder& baseder, int y, int x, int index);//index位置特殊标记
 };
 
 template<class T>
@@ -486,6 +485,9 @@ LinkList<T>& LinkList<T>::erase_back(iterator pos) {
 
 template<class T>
 LinkList<T>& LinkList<T>::erase_back(iterator begin,iterator end) {
+	if (begin.p ==nullptr ) {
+		return *this;
+	}
 	Node<T>* p = begin.p->next;
 	Node<T>* t = p;
 	begin.p->next = end.p;
@@ -835,6 +837,50 @@ inline int LinkList<T>::show(int with,Baseder& baseder,int y,int x) {
 		temp -= 8;
 	}
 	if (temp < 7 ) {
+		baseder.gotoxy(++y, x);
+	}
+	std::cout << "nullptr" << std::endl;
+	return y;
+}
+
+template<class T>
+inline int LinkList<T>::showJosephus(int with, Baseder& baseder, int y, int x, int index)
+{
+	using namespace std;
+	baseder.gotoxy(y, x);
+	std::cout << "(head)";
+	int temp = with - 6;
+	int col = 0;
+	int ti = 0;
+	for (Node<T>* p = head; p != nullptr; p = p->next) {
+		if (temp < 8) {
+			baseder.gotoxy(++y, x);
+			temp = with;
+			++col;
+			if (col >= 16) {
+				cout << "...  ->";
+				break;
+			}
+		}
+		if (ti++ == index) {
+			win::setColor(0x04);
+			cout << " *";
+			std::cout.width(4);
+			cout << left << p->data;
+			win::setColor();
+
+			std::cout << "->";
+			
+		}
+		else {
+			cout << "  ";
+			std::cout.width(4);
+			std::cout << left << p->data;
+			std::cout << "->";
+		}
+		temp -= 8;
+	}
+	if (temp < 7) {
 		baseder.gotoxy(++y, x);
 	}
 	std::cout << "nullptr" << std::endl;

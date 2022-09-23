@@ -2,6 +2,8 @@
 #include "LinkList.h"//链表实现
 #include "testLinkList.h"//链表功能测试
 #include "MailList.h"//通讯录
+#include "testJosephus.h"////约瑟夫问题
+#include "depositBusiness.h"//存储款业务
 #include "Base.h"//自定义基于控制台的图形库
 #include <algorithm>//STL算法
 #include <functional>//STL相关函数
@@ -17,13 +19,13 @@ void project_21120891(Base& base) {
 			testLinkList(base);
 			break;
 		case 1:
-			
+			testJosephus(base);
 			break;
 		case 2:
 			MailList(base).start();//通讯录通过一个类来管理,匿名类.start()即可
 			break;
 		case 3:
-			
+			depositBusiness(base).start();//存储款业务通过一个类来管理,匿名类.start()即可
 			break;
 		case 4:
 

@@ -38,15 +38,9 @@ public:
 	
 
 	//解除引用操作,值为p->data
-	friend T& operator*(MyIterator<T>& it) {
-		return it.p->data;
+	T& operator*() {
+		return this->p->data;
 	};
-	T& operator->() {
-		return p->data;
-	}
-	const T& operator->() const{//常量
-		return p->data;
-	}
 
 	//++操作
 	//前缀++
@@ -59,13 +53,13 @@ public:
 		return *this;
 	};
 	//后缀++
-	friend MyIterator<T> operator++(MyIterator<T>& it,int) {
-		MyIterator<T> temp = it;
-		if (it.p == nullptr) {//确保不会越界，方便inserter泛型算法在结尾插入时的后移(iterator++)操作
+	MyIterator<T> operator++(int) {
+		MyIterator<T> temp = *this;
+		if (this->p == nullptr) {//确保不会越界，方便inserter泛型算法在结尾插入时的后移(iterator++)操作
 			return temp;
 		}
-		it.index += 1;
-		it.p = it.p->next;
+		this->index += 1;
+		this->p = this->p->next;
 		return temp;
 	}
 
